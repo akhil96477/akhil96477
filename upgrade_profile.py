@@ -1,4 +1,9 @@
-<img width="100%" src="https://capsule-render.vercel.app/api?type=venom&color=0:000000,100:111111&height=300&section=header&text=DAVULA%20AKHIL&fontSize=60&fontColor=c8ff00&fontAlignY=45&animation=fadeIn&stroke=c8ff00&strokeWidth=2&desc=THINK%20%E2%9C%A6%20BUILD%20%E2%9C%A6%20SHIP&descSize=22&descColor=ffffff&descAlignY=65" />
+import os
+
+readme_path = "/Users/akhil/.gemini/antigravity/scratch/github_profile/README.md"
+workflow_path = "/Users/akhil/.gemini/antigravity/scratch/github_profile/.github/workflows/snake.yml"
+
+new_readme = """<img width="100%" src="https://capsule-render.vercel.app/api?type=venom&color=0:000000,100:111111&height=300&section=header&text=DAVULA%20AKHIL&fontSize=60&fontColor=c8ff00&fontAlignY=45&animation=fadeIn&stroke=c8ff00&strokeWidth=2&desc=THINK%20%E2%9C%A6%20BUILD%20%E2%9C%A6%20SHIP&descSize=22&descColor=ffffff&descAlignY=65" />
 
 <div align="center">
 
@@ -197,3 +202,44 @@ echo "Transforming ideas into scalable systems."
 </div>
 
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:000000,100:111111&height=150&section=footer" />
+"""
+
+with open(readme_path, "w") as f:
+    f.write(new_readme)
+
+new_workflow = """name: Generate Snake Animation
+
+on:
+  schedule:
+    - cron: "0 */12 * * *" # every 12 hours
+  workflow_dispatch:
+
+jobs:
+  generate:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Generate Snake
+        uses: Platane/snk@v3
+        with:
+          github_user_name: akhil96477
+          outputs: |
+            dist/github-snake.svg?color_snake=#000000&color_dots=#f3f4f6,#c2e59c,#64b3f4,#3b82f6,#2563eb
+            dist/github-snake-dark.svg?color_snake=#c8ff00&color_dots=#050505,#111111,#222222,#333333,#c8ff00
+
+      - name: Push to output branch
+        uses: crazy-max/ghaction-github-pages@v3.1.0
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+"""
+
+with open(workflow_path, "w") as f:
+    f.write(new_workflow)
+
+print("Updated README and workflow!")
